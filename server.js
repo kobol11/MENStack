@@ -1,6 +1,19 @@
+/**********************************************************************************************
+ * WEB222 - Assignment 2
+ * I declare that this assignment is my own work in accordance with Seneca Academic policy.
+ * No part of this assignment has been copied manually or electronically from any other source
+ * (including web sites) or distributed to other students.
+ * Name: Bolarinwa Komolafe
+ * Student ID: 122948169
+ * Date: 17th May, 2017
+ * Online (Heroku) URL: 
+ * 
+ **********************************************************************************************/
+
 var path = require("path");
 var express = require("express");
 var app = express();
+app.use(express.static('public'));
 var HTTP_PORT = process.env.PORT || 8000;
  
 // call this function after the http server starts listening for requests
@@ -18,6 +31,6 @@ app.get("/", function(req,res){
 app.get("/about", function(req,res){
    res.sendFile(path.join(__dirname + "/views/about.html"));
 });
-app.use(express.static('public'));
+
 // setup http server to listen on HTTP_PORT
 app.listen(HTTP_PORT, onHttpStart);

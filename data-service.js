@@ -57,11 +57,11 @@ module.exports.getAllEmployees = ()=>{
 
 module.exports.getEmployeesByStatus = (status)=>{
     return new Promise((resolve, reject)=>{
-        var store = [];
+        var result = [];
     
             for (var i = 0; i < employees.length; i++){
-                if(employees[i].status === status){
-                    store.push(employees[i]);
+                if(employees[i].status == status){
+                    result.push(employees[i]);
                 }
             }
         if(result.length > 0)

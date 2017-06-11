@@ -6,7 +6,7 @@
  * Name: Bolarinwa Komolafe
  * Student ID: 122948169
  * Date: 11th June, 2017
- * Online (Heroku) URL: 
+ * Online (Heroku) URL: https://stormy-cove-57005.herokuapp.com
  * 
  **********************************************************************************************/
 
@@ -34,6 +34,7 @@ app.get("/about", function(req,res){
 });
 
 // setup a route to return a JSON formatted string containing all the employees within the employees.json file
+
 app.get("/employees", (req, res) =>{
 
     if(req.query.status){
@@ -59,7 +60,16 @@ app.get("/employees", (req, res) =>{
         }).catch((errorMessage)=>{
             res.send(errorMessage);
         })
-    }else{
+    }else if((req.query).length != 0){
+        //res.json({message: req.query.manager});
+        dataService.getAllEmployees().then((data)=>{
+            res.json(data);
+            //res.json({message: req.query.status});
+        }).catch((errorMessage)=>{
+            res.send(errorMessage);
+        })
+    }
+    else{
         dataService.getMessage().then((dataMessage)=>{
             res.json({message: dataMessage});
         }).catch((errorMessage)=>{
@@ -83,17 +93,25 @@ app.get("/employee/:empNum", (req,res) => {
 app.get("/managers", (req, res)=>{
     //res.json({message: 'true'});
     dataService.getManagers().then((data)=>{
-        res.send(data);
+        res.json(data);
     }).catch((errorMessage)=>{
         res.send(errorMessage);
     });
 });
 
+/*app.get("/employees", (req, res)=>{
+    //res.json({message: 'true'});
+    dataService.getAllEmployees().then((data)=>{
+        res.json(data);
+    }).catch((errorMessage)=>{
+        res.send(errorMessage);
+    });
+});*/
 
 app.get("/departments", (req, res)=>{
     //res.json({message: 'departments'});
     dataService.getDepartments().then((data)=>{
-        res.send(data);
+        res.json(data);
     }).catch((errorMessage)=>{
         res.send(errorMessage);
     });

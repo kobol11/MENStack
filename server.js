@@ -41,30 +41,24 @@ app.get("/employees", (req, res) =>{
         
         dataService.getEmployeesByStatus(req.query.status).then((data)=>{
             res.json(data);
-            //res.json({message: req.query.status});
         }).catch((errorMessage)=>{
             res.send(errorMessage);
         })
     }else if(req.query.manager){
-        //res.json({message: req.query.manager});
         dataService.getEmployeesByManager(req.query.manager).then((data)=>{
             res.json(data);
-            //res.json({message: req.query.status});
         }).catch((errorMessage)=>{
             res.send(errorMessage);
         })
     }else if(req.query.department){
         dataService.getEmployeesByDepartment(req.query.department).then((data)=>{
             res.json(data);
-            //res.json({message: req.query.status});
         }).catch((errorMessage)=>{
             res.send(errorMessage);
         })
     }else if((req.query).length != 0){
-        //res.json({message: req.query.manager});
         dataService.getAllEmployees().then((data)=>{
             res.json(data);
-            //res.json({message: req.query.status});
         }).catch((errorMessage)=>{
             res.send(errorMessage);
         })
@@ -98,15 +92,6 @@ app.get("/managers", (req, res)=>{
         res.send(errorMessage);
     });
 });
-
-/*app.get("/employees", (req, res)=>{
-    //res.json({message: 'true'});
-    dataService.getAllEmployees().then((data)=>{
-        res.json(data);
-    }).catch((errorMessage)=>{
-        res.send(errorMessage);
-    });
-});*/
 
 app.get("/departments", (req, res)=>{
     //res.json({message: 'departments'});

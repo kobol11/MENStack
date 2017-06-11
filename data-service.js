@@ -13,7 +13,7 @@ module.exports.getMessage = () => {
         if(message.length > 0){
             resolve(message)
         }else{
-            reject("Oh No!");
+            reject("Oh No! Sorry your request cannot be completed");
         }
     });
 }
@@ -21,6 +21,8 @@ module.exports.getMessage = () => {
 var employees = [];
 var departments = [];
 var fs = require("fs");
+
+// This function reads the content of the "./data/employees.json" file
 module.exports.initialize = ()=>{
     return new Promise((resolve, reject)=>{
         fs.readFile('./data/employees.json', (err, data)=>{
@@ -44,6 +46,8 @@ module.exports.initialize = ()=>{
     });
 };
 
+
+// This function will provide full array of employee objects using the resolve method of the returned promise
 module.exports.getAllEmployees = ()=>{
     return new Promise((resolve, reject)=>{
         if(employees.length > 0){
@@ -55,6 +59,8 @@ module.exports.getAllEmployees = ()=>{
     });
 };
 
+// This function will provide an array of employee objects whose status matches the "status" parameter
+// using the resolve method of the returned promise
 module.exports.getEmployeesByStatus = (status)=>{
     return new Promise((resolve, reject)=>{
         var result = [];
@@ -74,6 +80,8 @@ module.exports.getEmployeesByStatus = (status)=>{
             });
 };
 
+// This function will provide an array of employee objects whose "department" property matches the department
+// parameter using the resolve method of the returned promise
 module.exports.getEmployeesByDepartment = (department)=>{
     return new Promise((resolve, reject)=>{
         var result = [];
@@ -92,6 +100,8 @@ module.exports.getEmployeesByDepartment = (department)=>{
     });
 };
 
+// This function will provide an array of employee objects whose "employeeManagerNum" matches the 
+// "manager" parameter using the resolve method of the returned promise
 module.exports.getEmployeesByManager = (manager) =>{
     return new Promise((resolve, reject)=>{
          var result = [];
@@ -110,6 +120,8 @@ module.exports.getEmployeesByManager = (manager) =>{
     });
 };
 
+// This function will provide a single employee object whose "employeeNum" property matches the 
+// "num" parameter using the resolve method of the returned promise
 module.exports.getEmployeeByNum = (num) =>{
     return new Promise((resolve, reject)=>{
         var result = [];
@@ -128,6 +140,8 @@ module.exports.getEmployeeByNum = (num) =>{
     });
 };
 
+// This function will provide an array of employee objects whose "isManager" property is true using
+// the resolve method of the returned promise
 module.exports.getManagers = ()=>{
     return new Promise((resolve, reject)=>{
         var result = [];
@@ -145,6 +159,9 @@ module.exports.getManagers = ()=>{
     });
 };
 
+
+// This function will provide the full array of "department" objects using the resolve method of the 
+// returned promise
 module.exports.getDepartments = ()=>{
     return new Promise((resolve, reject)=>{
         var result = [];

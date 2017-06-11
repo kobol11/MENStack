@@ -1,5 +1,5 @@
 /**********************************************************************************************
- * WEB222 - Assignment 2
+ * WEB222 - Assignment 3
  * I declare that this assignment is my own work in accordance with Seneca Academic policy.
  * No part of this assignment has been copied manually or electronically from any other source
  * (including web sites) or distributed to other students.
@@ -75,17 +75,14 @@ app.get("/employees", (req, res) =>{
 });
 
 app.get("/employee/:empNum", (req,res) => {
-    //res.json({message: req.params.empNum});
     dataService.getEmployeeByNum(req.params.empNum).then((data)=>{
         res.json(data);
-        //res.json({message: req.params.empNum});
     }).catch((errorMessage)=>{
         res.send(errorMessage);
     });
 });
 
 app.get("/managers", (req, res)=>{
-    //res.json({message: 'true'});
     dataService.getManagers().then((data)=>{
         res.json(data);
     }).catch((errorMessage)=>{

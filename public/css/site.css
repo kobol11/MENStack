@@ -53,3 +53,19 @@
 h3 {
     color: red;
 }
+
+.num{
+	width: 120px;
+}
+
+.id{
+	width: 95px;
+}
+
+.address{
+	width: 130px;
+}
+
+.textColor{
+	color: #4283f4;
+}

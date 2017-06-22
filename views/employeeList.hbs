@@ -4,10 +4,34 @@
         <hr />
     </div>
 </div>
-<div class="row">
-    <div class="col-md-12">
-        {{#each data}}
-        {{firstName}} {{last_name}} <br />
-        {{/each}}
-    </div>
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="num">Employee Num</th>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th class="address">Address</th>
+                <th class="id">Manager ID</th>
+                <th>Status</th>
+                <th>Department</th>
+                <th>Hired On</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each data}}
+            <tr>
+                <td>{{employeeNum}}</td>
+                <td class="textColor">{{firstName}} <br /> {{last_name}}</td>
+                <td class="textColor">{{email}}</td>
+                <td>{{addressStreet}} {{addresCity}} {{addressState}} {{addressPostal}}</td>
+                <td>{{employeeManagerNum}}</td>
+                <td class="textColor">{{status}}</td>
+                <td class="textColor">{{department}}</td>
+                <td>{{hireDate}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
 </div>
+

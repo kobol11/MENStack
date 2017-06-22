@@ -102,18 +102,17 @@ app.get("/employee/:empNum", (req,res) => {
 
 app.get("/managers", (req, res)=>{
     dataService.getManagers().then((data)=>{
-        res.json(data);
+        res.render("employeeList", {data: data, title:"Employees (Managers)"});
     }).catch((errorMessage)=>{
-        res.send(errorMessage);
+        res.render("employeeList", {data: {}, title:"Employees (Managers)"});
     });
 });
 
 app.get("/departments", (req, res)=>{
-    //res.json({message: 'departments'});
     dataService.getDepartments().then((data)=>{
-        res.json(data);
+        res.render("departmentList", {data: data, title: "Departments"});
     }).catch((errorMessage)=>{
-        res.send(errorMessage);
+        res.render("departmentList", {data: {}, title: "Departments"});
     });
 });
 app.use((req, res) => {

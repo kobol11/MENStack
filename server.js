@@ -42,13 +42,13 @@ function onHttpStart() {
 
 // setup a 'route' to listen on the default url path (http://localhost)
 app.get("/", function(req,res){
-   res.sendFile(path.join(__dirname + "/views/home.html"));
+   res.render("home");
    
 });
 
 // setup another route to listen on /about
 app.get("/about", function(req,res){
-   res.sendFile(path.join(__dirname + "/views/about.html"));
+   res.render("about");
 });
 
 // setup a route to return a JSON formatted string containing all the employees within the employees.json file

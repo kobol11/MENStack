@@ -115,6 +115,11 @@ app.get("/departments", (req, res)=>{
         res.render("departmentList", {data: {}, title: "Departments"});
     });
 });
+
+app.get("/employees/add", (req, res)=>{
+    res.render("addEmployee");
+    
+});
 app.use((req, res) => {
   res.status(404).send("Page Not Found");
 });

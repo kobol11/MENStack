@@ -76,9 +76,9 @@ app.get("/employees", (req, res) =>{
         })
     }else if((req.query).length != 0){
         dataService.getAllEmployees().then((data)=>{
-            res.json(data);
+            res.render("employeeList", {data:data, title:"Employees"});
         }).catch((errorMessage)=>{
-            res.send(errorMessage);
+            res.render("employeeList", {data:{}, title:"Employees"});
         })
     }
     else{

@@ -4,10 +4,21 @@
         <hr />
     </div>
 </div>
-<div class="row">
-    <div class="col-md-12">
+<div class="table-responsive">
+    <table class="table">
+    <thead>
+        <tr>
+            <th>Department Number</th>
+            <th>Department Name</th>
+        </tr>
+    </thead>
+    <tbody>
         {{#each data}}
-        {{departmentId}} {{departmentName}}<br />
+        <tr>
+            <td>{{departmentId}}</td>
+            <td>{{departmentName}}</td>
+        </tr>
         {{/each}}
-    </div>
+    </tbody>
+    </table>
 </div>

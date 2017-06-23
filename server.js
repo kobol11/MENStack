@@ -94,9 +94,9 @@ app.get("/employees", (req, res) =>{
 
 app.get("/employee/:empNum", (req,res) => {
     dataService.getEmployeeByNum(req.params.empNum).then((data)=>{
-        res.render("employeeList", {data:data, title:"Employees"});
-    }).catch((errorMessage)=>{
-       res.render("employeeList", {data:{}, title:"Employees"});
+        res.render("employee", {data:data});
+    }).catch(()=>{
+       res.status(404).send("Employee Not Found");
     });
 });
 

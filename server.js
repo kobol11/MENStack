@@ -123,7 +123,9 @@ app.get("/employees/add", (req, res)=>{
 
 app.post("/employees/add", (req, res)=>{
     console.log(req.body);
+    dataService.addEmployee(req.body).then(()=>{
     res.redirect("/employees");
+    });
 });
 
 app.use((req, res) => {

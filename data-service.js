@@ -20,6 +20,7 @@ module.exports.getMessage = () => {
 
 var employees = []; // An array of employee objects
 var departments = []; // An array of department objects
+var empCount = 0;
 var fs = require("fs");
 
 // This function reads the content of the "./data/employees.json" file
@@ -31,6 +32,7 @@ module.exports.initialize = ()=>{
             }
             else 
             employees = JSON.parse(data);
+            empCount = employees.length;
             resolve(fs.readFile('./data/departments.json', (err, data)=>{
             if (err){
                 reject("unable to read file");
@@ -175,4 +177,13 @@ module.exports.getDepartments = ()=>{
                reject("no results returned");
          }
     });
+};
+
+module.exports.addEmployee = (employeeData)=>{
+return new Promise((resolve, reject)=>{
+    empCount++;
+    employeeData.employeeNum = empCount;
+    employees.push(employeeData);
+    resolve();
+});
 };

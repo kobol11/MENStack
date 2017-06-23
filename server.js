@@ -58,15 +58,15 @@ app.get("/employees", (req, res) =>{
     if(req.query.status){
         
         dataService.getEmployeesByStatus(req.query.status).then((data)=>{
-            res.json(data);
+            res.render("employeeList", {data:data, title:"Employees"});
         }).catch((errorMessage)=>{
-            res.send(errorMessage);
+            res.render("employeeList", {data:{}, title:"Employees"});
         })
     }else if(req.query.manager){
         dataService.getEmployeesByManager(req.query.manager).then((data)=>{
-            res.json(data);
+            res.render("employeeList", {data:data, title:"Employees"});
         }).catch((errorMessage)=>{
-            res.send(errorMessage);
+            res.render("employeeList", {data:{}, title:"Employees"});
         })
     }else if(req.query.department){
         dataService.getEmployeesByDepartment(req.query.department).then((data)=>{
@@ -94,9 +94,9 @@ app.get("/employees", (req, res) =>{
 
 app.get("/employee/:empNum", (req,res) => {
     dataService.getEmployeeByNum(req.params.empNum).then((data)=>{
-        res.json(data);
+        res.render("employeeList", {data:data, title:"Employees"});
     }).catch((errorMessage)=>{
-        res.send(errorMessage);
+       res.render("employeeList", {data:{}, title:"Employees"});
     });
 });
 
@@ -118,11 +118,18 @@ app.get("/departments", (req, res)=>{
 
 app.get("/employees/add", (req, res)=>{
     res.render("addEmployee");
-    
+
 });
+
+app.post("/employees/add", (req, res)=>{
+    console.log(req.body);
+    res.redirect("/employees");
+});
+
 app.use((req, res) => {
   res.status(404).send("Page Not Found");
 });
+
 
 
 // setup http server to listen on HTTP_PORT

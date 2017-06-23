@@ -51,7 +51,7 @@ app.get("/about", function(req,res){
    res.render("about");
 });
 
-// setup a route to return a JSON formatted string containing all the employees within the employees.json file
+// setup a route to return employee list
 
 app.get("/employees", (req, res) =>{
 
@@ -92,6 +92,7 @@ app.get("/employees", (req, res) =>{
     
 });
 
+// Setting up a route to get employee based on the employee number
 app.get("/employee/:empNum", (req,res) => {
     dataService.getEmployeeByNum(req.params.empNum).then((data)=>{
         res.render("employee", {data:data});
@@ -100,6 +101,7 @@ app.get("/employee/:empNum", (req,res) => {
     });
 });
 
+// Setting up a route to get list of managers
 app.get("/managers", (req, res)=>{
     dataService.getManagers().then((data)=>{
         res.render("employeeList", {data: data, title:"Employees (Managers)"});
@@ -108,6 +110,7 @@ app.get("/managers", (req, res)=>{
     });
 });
 
+// Setting up a route for getting the department list
 app.get("/departments", (req, res)=>{
     dataService.getDepartments().then((data)=>{
         res.render("departmentList", {data: data, title: "Departments"});
@@ -116,11 +119,13 @@ app.get("/departments", (req, res)=>{
     });
 });
 
+// Setting up a route to add new employee
 app.get("/employees/add", (req, res)=>{
     res.render("addEmployee");
 
 });
 
+// Setting up a route to show all employees after a new employee is added 
 app.post("/employees/add", (req, res)=>{
     console.log(req.body);
     dataService.addEmployee(req.body).then(()=>{
@@ -128,6 +133,7 @@ app.post("/employees/add", (req, res)=>{
     });
 });
 
+// Setting up a route to show all employees after the employee list is updated
 app.post("/employee/update", (req, res)=>{
     console.log(req.body);
     dataService.updateEmployee(req.body).then(()=>{
@@ -135,6 +141,7 @@ app.post("/employee/update", (req, res)=>{
     });
 });
 
+// Setting up a route to capture every other request
 app.use((req, res) => {
   res.status(404).send("Page Not Found");
 });

@@ -179,6 +179,7 @@ module.exports.getDepartments = ()=>{
     });
 };
 
+// This function helps in adding new employee to the employee database
 module.exports.addEmployee = (employeeData)=>{
 return new Promise((resolve, reject)=>{
     empCount++;
@@ -188,6 +189,7 @@ return new Promise((resolve, reject)=>{
 });
 };
 
+// This function helps in updating the employee database
 module.exports.updateEmployee = (employeeData)=>{
     return new Promise((resolve, reject)=>{
         for (var i = 0; i < employees.length; i++){

@@ -1,11 +1,11 @@
 /**********************************************************************************************
- * WEB222 - Assignment 3
+ * WEB222 - Assignment 4
  * I declare that this assignment is my own work in accordance with Seneca Academic policy.
  * No part of this assignment has been copied manually or electronically from any other source
  * (including web sites) or distributed to other students.
  * Name: Bolarinwa Komolafe
  * Student ID: 122948169
- * Date: 11th June, 2017
+ * Date: 22nd June, 2017
  * Online (Heroku) URL: https://stormy-cove-57005.herokuapp.com
  * 
  **********************************************************************************************/
@@ -124,6 +124,13 @@ app.get("/employees/add", (req, res)=>{
 app.post("/employees/add", (req, res)=>{
     console.log(req.body);
     dataService.addEmployee(req.body).then(()=>{
+    res.redirect("/employees");
+    });
+});
+
+app.post("/employee/update", (req, res)=>{
+    console.log(req.body);
+    dataService.updateEmployee(req.body).then(()=>{
     res.redirect("/employees");
     });
 });

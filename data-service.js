@@ -18,7 +18,15 @@ module.exports.getMessage = () => {
     });
 };
 
-
+const Sequelize = require('sequelize');
+var sequelize = new Sequelize('d2m0g0qf7q1ub1', 'zzfvcterqeotaq', 'b4e2997ad9b3813519b10f5a347f05990941a7c061b6dfe8640c472f20183d0a',{
+    host: 'ec2-184-73-249-56.compute-1.amazonaws.com',
+    dialect: 'postgres',
+    port: 5432,
+    dialectOptions: {
+        ssl: true
+    }
+});
 
 // This function reads the content of the "./data/employees.json" file
 module.exports.initialize = ()=>{

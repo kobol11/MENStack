@@ -18,10 +18,7 @@ module.exports.getMessage = () => {
     });
 }
 
-var employees = []; // An array of employee objects
-var departments = []; // An array of department objects
-var empCount = 0;
-var fs = require("fs");
+
 
 // This function reads the content of the "./data/employees.json" file
 module.exports.initialize = ()=>{

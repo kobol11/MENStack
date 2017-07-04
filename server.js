@@ -154,3 +154,8 @@ dataService.initialize().then(()=>{
 }).catch((errorMessage)=>{
   res.send(errorMessage);
 });
+
+app.get("/departments/add", (req, res)=>{
+    res.render("addDepartment");
+
+});

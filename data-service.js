@@ -27,7 +27,39 @@ var sequelize = new Sequelize('d2m0g0qf7q1ub1', 'zzfvcterqeotaq', 'b4e2997ad9b38
         ssl: true
     }
 });
+var Employee = sequelize.define('Employee',{
+    employeeNum: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
 
+    },
+    firstName: Sequelize.STRING,
+    last_name: Sequelize.STRING,
+    email: Sequelize.STRING,
+    SSN: Sequelize.STRING,
+    addressStreet: Sequelize.STRING,
+    addresCity: Sequelize.STRING,
+    addressState: Sequelize.STRING,
+    addressPostal: Sequelize.STRING,
+    maritalStatus: Sequelize.STRING,
+    isManager: Sequelize.BOOLEAN,
+    employeeManagerNum: Sequelize.INTEGER,
+    status: Sequelize.STRING,
+    department: Sequelize.INTEGER,
+    hireDate: Sequelize.STRING
+},{
+    createdAt: false,
+    updatedAt: false
+});
+var Department = sequelize.define('Department', {
+    departmentId: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
+    departmentName: Sequelize.STRING
+});
 // This function reads the content of the "./data/employees.json" file
 module.exports.initialize = ()=>{
     return new Promise((resolve, reject)=>{

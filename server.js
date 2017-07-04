@@ -1,11 +1,11 @@
 /**********************************************************************************************
- * WEB222 - Assignment 4
+ * WEB222 - Assignment 5
  * I declare that this assignment is my own work in accordance with Seneca Academic policy.
  * No part of this assignment has been copied manually or electronically from any other source
  * (including web sites) or distributed to other students.
  * Name: Bolarinwa Komolafe
  * Student ID: 122948169
- * Date: 22nd June, 2017
+ * Date: 4th July, 2017
  * Online (Heroku) URL: https://stormy-cove-57005.herokuapp.com
  * 
  **********************************************************************************************/
@@ -141,6 +141,33 @@ app.post("/employee/update", (req, res)=>{
     });
 });
 
+app.get("/departments/add", (req, res)=>{
+    res.render("addDepartment");
+
+});
+
+app.post("/departments/add", (req, res)=>{
+    console.log(req.body);
+    dataService.addDepartment(req.body).then(()=>{
+    res.redirect("/departments");
+    });
+});
+
+app.post("/department/update", (req, res)=>{
+    console.log(req.body);
+    dataService.updateDepartment(req.body).then(()=>{
+    res.redirect("/departments");
+    });
+});
+
+app.get("/department/:departmentId", (req,res) => {
+    dataService.getDepartmentById(req.params.departmentId).then((data)=>{
+        res.render("department", {data:data});
+    }).catch(()=>{
+       res.status(404).send("Department Not Found");
+    });
+});
+
 // Setting up a route to capture every other request
 app.use((req, res) => {
   res.status(404).send("Page Not Found");
@@ -155,7 +182,3 @@ dataService.initialize().then(()=>{
   res.send(errorMessage);
 });
 
-app.get("/departments/add", (req, res)=>{
-    res.render("addDepartment");
-
-});

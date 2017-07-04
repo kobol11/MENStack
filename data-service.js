@@ -59,11 +59,15 @@ var Department = sequelize.define('Department', {
         autoIncrement: true
     },
     departmentName: Sequelize.STRING
+},{
+    createdAt: false,
+    updatedAt: false
 });
 // This function reads the content of the "./data/employees.json" file
 module.exports.initialize = ()=>{
     return new Promise((resolve, reject)=>{
-        reject();
+        sequelize.sync().then(resolve()).catch(reject("unable to sync the database"));
+        
     });
 };
 
@@ -71,7 +75,9 @@ module.exports.initialize = ()=>{
 // This function will provide full array of employee objects using the resolve method of the returned promise
 module.exports.getAllEmployees = ()=>{
     return new Promise((resolve, reject)=>{
-        reject();
+        sequelize.sync().then(function() {
+            Employee.findAll().then(resolve(data)).catch(reject('no results returned'));
+        });       
     });
 };
 
@@ -79,7 +85,13 @@ module.exports.getAllEmployees = ()=>{
 // using the resolve method of the returned promise
 module.exports.getEmployeesByStatus = (status)=>{
     return new Promise((resolve, reject)=>{
-        reject();
+       sequelize.sync().then(function() {
+            Employee.findAll({
+                where: {
+                    status: status
+                }
+            }).then(resolve(data)).catch(reject('no results returned'));
+        });
     });
 };
 
@@ -87,7 +99,13 @@ module.exports.getEmployeesByStatus = (status)=>{
 // parameter using the resolve method of the returned promise
 module.exports.getEmployeesByDepartment = (department)=>{
     return new Promise((resolve, reject)=>{
-        reject();
+        sequelize.sync().then(function() {
+            Employee.findAll({
+                where: {
+                    department: department
+                }
+            }).then(resolve(data)).catch(reject('no results returned'));
+        });
     });
 };
 
@@ -95,7 +113,13 @@ module.exports.getEmployeesByDepartment = (department)=>{
 // "manager" parameter using the resolve method of the returned promise
 module.exports.getEmployeesByManager = (manager) =>{
     return new Promise((resolve, reject)=>{
-        reject();
+        sequelize.sync().then(function() {
+            Employee.findAll({
+                where: {
+                    employeeManagerNum: manager
+                }
+            }).then(resolve(data)).catch(reject('no results returned'));
+        });
     });
 };
 
@@ -103,7 +127,13 @@ module.exports.getEmployeesByManager = (manager) =>{
 // "num" parameter using the resolve method of the returned promise
 module.exports.getEmployeeByNum = (num) =>{
     return new Promise((resolve, reject)=>{
-        reject();
+        sequelize.sync().then(function() {
+            Employee.findAll({
+                where: {
+                    employeeNum: num
+                }
+            }).then(resolve(data)).catch(reject('no results returned'));
+        });
     });
 };
 
@@ -111,7 +141,13 @@ module.exports.getEmployeeByNum = (num) =>{
 // the resolve method of the returned promise
 module.exports.getManagers = ()=>{
     return new Promise((resolve, reject)=>{
-        reject();
+        sequelize.sync().then(function() {
+            Employee.findAll({
+                where: {
+                    isManager: true
+                }
+            }).then(resolve(data)).catch(reject('no results returned'));
+        });
     });
 };
 
@@ -120,20 +156,118 @@ module.exports.getManagers = ()=>{
 // returned promise
 module.exports.getDepartments = ()=>{
     return new Promise((resolve, reject)=>{
-        reject();
+       sequelize.sync().then(function() {
+            Department.findAll().then(resolve(data)).catch(reject('no results returned'));
+        });
     });
 };
 
 // This function helps in adding new employee to the employee database
 module.exports.addEmployee = (employeeData)=>{
 return new Promise((resolve, reject)=>{
-        reject();
+    employeeData.isManager = (employeeData.isManager)? true : false;
+    for (var prop in employeeData) {
+        if (employeeData[prop] === ''){
+            employeeData[prop] = null;
+        }
+    }
+        sequelize.sync().then(function() {
+            Employee.create({
+                employeeNum: employeeData.employeeNum,
+                firstName: employeeData.firstName,
+                last_name: employeeData.last_name,
+                email: employeeData.email,
+                SSN: employeeData.SSN,
+                addressStreet: employeeData.addressStreet,
+                addresCity: employeeData.addresCity,
+                addressState: employeeData.addressState,
+                addressPostal: employeeData.addressPostal,
+                maritalStatus: employeeData.maritalStatus,
+                isManager: employeeData.isManager,
+                employeeManagerNum: employeeData.employeeManagerNum,
+                status: employeeData.status,
+                department: employeeData.department,
+                hireDate: employeeData.hireDate
+            }).then(resolve()).catch(reject('unable to create employee'));
+        });
     });
 };
 
 // This function helps in updating the employee database
 module.exports.updateEmployee = (employeeData)=>{
     return new Promise((resolve, reject)=>{
-        reject();
+        employeeData.isManager = (employeeData.isManager)? true : false;
+        for (var prop in employeeData) {
+        if (employeeData[prop] === ''){
+            employeeData[prop] = null;
+        }
+    }
+        sequelize.sync().then(function() {
+            Employee.update({
+                employeeNum: employeeData.employeeNum,
+                firstName: employeeData.firstName,
+                last_name: employeeData.last_name,
+                email: employeeData.email,
+                SSN: employeeData.SSN,
+                addressStreet: employeeData.addressStreet,
+                addresCity: employeeData.addresCity,
+                addressState: employeeData.addressState,
+                addressPostal: employeeData.addressPostal,
+                maritalStatus: employeeData.maritalStatus,
+                isManager: employeeData.isManager,
+                employeeManagerNum: employeeData.employeeManagerNum,
+                status: employeeData.status,
+                department: employeeData.department,
+                hireDate: employeeData.hireDate
+            }, {
+                where: {employeeNum: employeeData.employeeNum}
+            }).then(resolve()).catch(reject('unable to update employee'));
+        });
+    });
+};
+
+module.exports.addDepartment = (departmentData)=>{
+return new Promise((resolve, reject)=>{
+    for (var prop in departmentData) {
+        if (departmentData[prop] === ''){
+            departmentData[prop] = null;
+        }
+    }
+        sequelize.sync().then(function() {
+            Department.create({
+                departmentId: departmentData.departmentId,
+                departmentName: departmentData.departmentName
+            }).then(resolve()).catch(reject('unable to create department'));
+        });
+    });
+};
+
+module.exports.updateDepartment = (departmentData)=>{
+    return new Promise((resolve, reject)=>{
+        for (var prop in departmentData) {
+        if (departmentData[prop] === ''){
+            departmentData[prop] = null;
+        }
+    }
+        sequelize.sync().then(function() {
+            Department.update({
+                departmentId: departmentData.departmentId,
+                departmentName: departmentData.departmentName
+            }, {
+                where: {departmentId: departmentData.departmentId}
+            }).then(resolve()).catch(reject('unable to update department'));
+        });
+    });
+};
+
+module.exports.getDepartmentById = (id) =>{
+    return new Promise((resolve, reject)=>{
+        sequelize.sync().then(function() {
+            Department.findAll({
+                where: {
+                    departmentId: id
+                }
+            }).then(resolve(data[0])).catch(reject('no results returned'));
+        });
     });
 };

@@ -121,7 +121,9 @@ app.get("/departments", (req, res)=>{
 
 // Setting up a route to add new employee
 app.get("/employees/add", (req, res)=>{
-    res.render("addEmployee");
+    dataService.getDepartments().then(()=>{res.render("addEmployee", {departments: data});}).catch(()=>{
+        res.render("addEmployee", {departments: {}});
+    });
 
 });
 

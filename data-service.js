@@ -66,7 +66,7 @@ var Department = sequelize.define('Department', {
 // This function reads the content of the "./data/employees.json" file
 module.exports.initialize = ()=>{
     return new Promise((resolve, reject)=>{
-        sequelize.sync().then(resolve()).catch(reject("unable to sync the database"));
+        sequelize.sync().then(resolve()).catch("unable to sync the database");
         
     });
 };
@@ -76,7 +76,9 @@ module.exports.initialize = ()=>{
 module.exports.getAllEmployees = ()=>{
     return new Promise((resolve, reject)=>{
         sequelize.sync().then(function() {
-            Employee.findAll().then(resolve(data)).catch(reject('no results returned'));
+            Employee.findAll({attributes:[]}).then(function(data){
+                resolve(data)
+            }).catch('no results returned');
         });       
     });
 };
@@ -90,7 +92,7 @@ module.exports.getEmployeesByStatus = (status)=>{
                 where: {
                     status: status
                 }
-            }).then(resolve(data)).catch(reject('no results returned'));
+            }).then(resolve(data)).catch('no results returned');
         });
     });
 };
@@ -104,7 +106,7 @@ module.exports.getEmployeesByDepartment = (department)=>{
                 where: {
                     department: department
                 }
-            }).then(resolve(data)).catch(reject('no results returned'));
+            }).then(resolve(data)).catch('no results returned');
         });
     });
 };
@@ -118,7 +120,7 @@ module.exports.getEmployeesByManager = (manager) =>{
                 where: {
                     employeeManagerNum: manager
                 }
-            }).then(resolve(data)).catch(reject('no results returned'));
+            }).then(resolve(data)).catch('no results returned');
         });
     });
 };
@@ -132,7 +134,7 @@ module.exports.getEmployeeByNum = (num) =>{
                 where: {
                     employeeNum: num
                 }
-            }).then(resolve(data)).catch(reject('no results returned'));
+            }).then(resolve(data)).catch('no results returned');
         });
     });
 };
@@ -143,10 +145,11 @@ module.exports.getManagers = ()=>{
     return new Promise((resolve, reject)=>{
         sequelize.sync().then(function() {
             Employee.findAll({
+                attributes: [],
                 where: {
                     isManager: true
                 }
-            }).then(resolve(data)).catch(reject('no results returned'));
+            }).then(resolve()).catch('no results returned');
         });
     });
 };
@@ -157,7 +160,11 @@ module.exports.getManagers = ()=>{
 module.exports.getDepartments = ()=>{
     return new Promise((resolve, reject)=>{
        sequelize.sync().then(function() {
-            Department.findAll().then(resolve(data)).catch(reject('no results returned'));
+        Department.findAll({
+            attributes: ['departmentId', 'departmentName']
+        }).then(
+            resolve()
+        ).catch('no results returned');
         });
     });
 };
@@ -188,7 +195,7 @@ return new Promise((resolve, reject)=>{
                 status: employeeData.status,
                 department: employeeData.department,
                 hireDate: employeeData.hireDate
-            }).then(resolve()).catch(reject('unable to create employee'));
+            }).then(resolve()).catch('unable to create employee');
         });
     });
 };
@@ -221,7 +228,7 @@ module.exports.updateEmployee = (employeeData)=>{
                 hireDate: employeeData.hireDate
             }, {
                 where: {employeeNum: employeeData.employeeNum}
-            }).then(resolve()).catch(reject('unable to update employee'));
+            }).then(resolve()).catch('unable to update employee');
         });
     });
 };
@@ -237,7 +244,7 @@ return new Promise((resolve, reject)=>{
             Department.create({
                 departmentId: departmentData.departmentId,
                 departmentName: departmentData.departmentName
-            }).then(resolve()).catch(reject('unable to create department'));
+            }).then(resolve()).catch('unable to create department');
         });
     });
 };
@@ -255,7 +262,7 @@ module.exports.updateDepartment = (departmentData)=>{
                 departmentName: departmentData.departmentName
             }, {
                 where: {departmentId: departmentData.departmentId}
-            }).then(resolve()).catch(reject('unable to update department'));
+            }).then(resolve()).catch('unable to update department');
         });
     });
 };
@@ -267,7 +274,7 @@ module.exports.getDepartmentById = (id) =>{
                 where: {
                     departmentId: id
                 }
-            }).then(resolve(data[0])).catch(reject('no results returned'));
+            }).then(resolve(data[0])).catch('no results returned');
         });
     });
 };

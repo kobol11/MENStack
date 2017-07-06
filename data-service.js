@@ -75,11 +75,24 @@ module.exports.initialize = ()=>{
 // This function will provide full array of employee objects using the resolve method of the returned promise
 module.exports.getAllEmployees = ()=>{
     return new Promise((resolve, reject)=>{
-        sequelize.sync().then(function() {
-            Employee.findAll({attributes:[]}).then(function(data){
-                resolve(data)
-            }).catch('no results returned');
-        });       
+        sequelize.sync().then(function(){Employee.findAll({
+            attributes: [["employeeNum", "Employee Num"],
+                        ["firstName" || " " || "last_name", "Full Name"],
+                        ["email", "Email"],
+                        ["addressStreet" || " " || "addresCity" || " " || "addressState" || " " || "addressPostal", "Address"],
+                        ["employeeManagerNum", "Manager ID"],
+                        ["status", "Status"],
+                        ["department", "Department"],
+                        ["hireDate", "Hired On"]]
+        }).then(function(data){
+            if(data.length > 0){
+                resolve(data);
+            }
+            else{
+                reject("no results returned");
+            }
+        })
+        });      
     });
 };
 
@@ -89,10 +102,25 @@ module.exports.getEmployeesByStatus = (status)=>{
     return new Promise((resolve, reject)=>{
        sequelize.sync().then(function() {
             Employee.findAll({
+                attributes: [["employeeNum", "Employee Num"],
+                        ["firstName" || " " || "last_name", "Full Name"],
+                        ["email", "Email"],
+                        ["addressStreet" || " " || "addresCity" || " " || "addressState" || " " || "addressPostal", "Address"],
+                        ["employeeManagerNum", "Manager ID"],
+                        ["status", "Status"],
+                        ["department", "Department"],
+                        ["hireDate", "Hired On"]],
                 where: {
                     status: status
                 }
-            }).then(resolve(data)).catch('no results returned');
+            }).then(function(data){
+                if(data.length > 0){
+                resolve(data);
+            }
+            else{
+                reject("no results returned");
+            }
+            })
         });
     });
 };
@@ -103,10 +131,25 @@ module.exports.getEmployeesByDepartment = (department)=>{
     return new Promise((resolve, reject)=>{
         sequelize.sync().then(function() {
             Employee.findAll({
+                attributes: [["employeeNum", "Employee Num"],
+                        ["firstName" || " " || "last_name", "Full Name"],
+                        ["email", "Email"],
+                        ["addressStreet" || " " || "addresCity" || " " || "addressState" || " " || "addressPostal", "Address"],
+                        ["employeeManagerNum", "Manager ID"],
+                        ["status", "Status"],
+                        ["department", "Department"],
+                        ["hireDate", "Hired On"]],
                 where: {
                     department: department
                 }
-            }).then(resolve(data)).catch('no results returned');
+            }).then(function(data){
+                if(data.length > 0){
+                resolve(data);
+            }
+            else{
+                reject("no results returned");
+            }
+            })
         });
     });
 };
@@ -117,10 +160,25 @@ module.exports.getEmployeesByManager = (manager) =>{
     return new Promise((resolve, reject)=>{
         sequelize.sync().then(function() {
             Employee.findAll({
+                attributes: [["employeeNum", "Employee Num"],
+                        ["firstName" || " " || "last_name", "Full Name"],
+                        ["email", "Email"],
+                        ["addressStreet" || " " || "addresCity" || " " || "addressState" || " " || "addressPostal", "Address"],
+                        ["employeeManagerNum", "Manager ID"],
+                        ["status", "Status"],
+                        ["department", "Department"],
+                        ["hireDate", "Hired On"]],
                 where: {
                     employeeManagerNum: manager
                 }
-            }).then(resolve(data)).catch('no results returned');
+            }).then(function(data){
+                if(data.length > 0){
+                resolve(data);
+            }
+            else{
+                reject("no results returned");
+            }
+            })
         });
     });
 };
@@ -131,10 +189,25 @@ module.exports.getEmployeeByNum = (num) =>{
     return new Promise((resolve, reject)=>{
         sequelize.sync().then(function() {
             Employee.findAll({
+                attributes: [["employeeNum", "Employee Num"],
+                        ["firstName" || " " || "last_name", "Full Name"],
+                        ["email", "Email"],
+                        ["addressStreet" || " " || "addresCity" || " " || "addressState" || " " || "addressPostal", "Address"],
+                        ["employeeManagerNum", "Manager ID"],
+                        ["status", "Status"],
+                        ["department", "Department"],
+                        ["hireDate", "Hired On"]],
                 where: {
                     employeeNum: num
                 }
-            }).then(resolve(data)).catch('no results returned');
+            }).then(function(data){
+                if(data.length > 0){
+                resolve(data);
+            }
+            else{
+                reject("no results returned");
+            }
+            })
         });
     });
 };
@@ -145,11 +218,25 @@ module.exports.getManagers = ()=>{
     return new Promise((resolve, reject)=>{
         sequelize.sync().then(function() {
             Employee.findAll({
-                attributes: [],
+                attributes: [["employeeNum", "Employee Num"],
+                        ["firstName" || " " || "last_name", "Full Name"],
+                        ["email", "Email"],
+                        ["addressStreet" || " " || "addresCity" || " " || "addressState" || " " || "addressPostal", "Address"],
+                        ["employeeManagerNum", "Manager ID"],
+                        ["status", "Status"],
+                        ["department", "Department"],
+                        ["hireDate", "Hired On"]],
                 where: {
                     isManager: true
                 }
-            }).then(resolve()).catch('no results returned');
+            }).then(function(data){
+                if(data.length > 0){
+                resolve(data);
+            }
+            else{
+                reject("no results returned");
+            }
+            })
         });
     });
 };
@@ -162,9 +249,16 @@ module.exports.getDepartments = ()=>{
        sequelize.sync().then(function() {
         Department.findAll({
             attributes: ['departmentId', 'departmentName']
-        }).then(
-            resolve()
-        ).catch('no results returned');
+        }).then(function(data){
+            if (data.length > 0){
+                resolve(data);
+            }
+            else{
+                reject("no results returned");
+            }
+        }
+            
+        )
         });
     });
 };
@@ -274,7 +368,14 @@ module.exports.getDepartmentById = (id) =>{
                 where: {
                     departmentId: id
                 }
-            }).then(resolve(data[0])).catch('no results returned');
+            }).then(function(data){
+                if(data.length > 0){
+                resolve(data[0]);
+            }
+            else{
+                reject("no results returned");
+            }
+            })
         });
     });
 };

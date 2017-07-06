@@ -94,11 +94,40 @@ app.get("/employees", (req, res) =>{
 
 // Setting up a route to get employee based on the employee number
 app.get("/employee/:empNum", (req,res) => {
-    dataService.getEmployeeByNum(req.params.empNum).then((data)=>{
+
+    /*dataService.getEmployeeByNum(req.params.empNum).then((data)=>{
         res.render("employee", {data:data});
     }).catch(()=>{
        res.status(404).send("Employee Not Found");
-    });
+    });*/
+
+// initialize an empty object to store the values
+let viewData = {};
+dataService.getEmployeeByNum(req.params.empNum)
+.then((data)=>{
+    viewData.data = data; // store employee data in the "viewData" object as "data"
+}).catch(()=>{
+    viewData.data = null; // set employee to null if there was an error
+}).then(dataService.getDepartments)
+.then((data)=>{
+    viewData.departments = data; // store department data in the "viewData" object as "departments"
+    // loop through viewData.departments and once we have found the departmentId that matches
+    // the employee's "department" value, add a "selected" property to the matching
+    // viewData.departments object
+    for(let i = 0; i < viewData.departments.length; i++){
+        if(viewData.departments[i].departmentId == viewData.data.department){
+            viewData.departments[i].selected = true;
+        }
+    }
+}).catch(()=>{
+    viewData.departments = []; // set departments to empty if there was an error
+}).then(()=>{
+    if(viewData.data == null){ // if no employee - return an error
+        res.status(404).send("Employee not found");
+    }else{
+        res.render("employee", {viewData: viewData}); // render the "employee" view
+    }
+});
 });
 
 // Setting up a route to get list of managers

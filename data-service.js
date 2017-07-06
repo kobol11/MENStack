@@ -66,7 +66,7 @@ var Department = sequelize.define('Department', {
 // This function reads the content of the "./data/employees.json" file
 module.exports.initialize = ()=>{
     return new Promise((resolve, reject)=>{
-        sequelize.sync().then(resolve()).catch("unable to sync the database");
+        sequelize.sync().then(resolve()).catch(reject("unable to sync the database"));
         
     });
 };
@@ -75,7 +75,7 @@ module.exports.initialize = ()=>{
 // This function will provide full array of employee objects using the resolve method of the returned promise
 module.exports.getAllEmployees = ()=>{
     return new Promise((resolve, reject)=>{
-        sequelize.sync().then(function(){Employee.findAll({
+        Employee.findAll({
             attributes: [["employeeNum", "Employee Num"],
                         ["firstName" || " " || "last_name", "Full Name"],
                         ["email", "Email"],
@@ -93,14 +93,13 @@ module.exports.getAllEmployees = ()=>{
             }
         })
         });      
-    });
 };
 
 // This function will provide an array of employee objects whose status matches the "status" parameter
 // using the resolve method of the returned promise
 module.exports.getEmployeesByStatus = (status)=>{
     return new Promise((resolve, reject)=>{
-       sequelize.sync().then(function() {
+       
             Employee.findAll({
                 attributes: [["employeeNum", "Employee Num"],
                         ["firstName" || " " || "last_name", "Full Name"],
@@ -121,7 +120,7 @@ module.exports.getEmployeesByStatus = (status)=>{
                 reject("no results returned");
             }
             })
-        });
+       
     });
 };
 
@@ -129,7 +128,7 @@ module.exports.getEmployeesByStatus = (status)=>{
 // parameter using the resolve method of the returned promise
 module.exports.getEmployeesByDepartment = (department)=>{
     return new Promise((resolve, reject)=>{
-        sequelize.sync().then(function() {
+        
             Employee.findAll({
                 attributes: [["employeeNum", "Employee Num"],
                         ["firstName" || " " || "last_name", "Full Name"],
@@ -150,7 +149,7 @@ module.exports.getEmployeesByDepartment = (department)=>{
                 reject("no results returned");
             }
             })
-        });
+        
     });
 };
 
@@ -158,7 +157,7 @@ module.exports.getEmployeesByDepartment = (department)=>{
 // "manager" parameter using the resolve method of the returned promise
 module.exports.getEmployeesByManager = (manager) =>{
     return new Promise((resolve, reject)=>{
-        sequelize.sync().then(function() {
+        
             Employee.findAll({
                 attributes: [["employeeNum", "Employee Num"],
                         ["firstName" || " " || "last_name", "Full Name"],
@@ -179,7 +178,7 @@ module.exports.getEmployeesByManager = (manager) =>{
                 reject("no results returned");
             }
             })
-        });
+        
     });
 };
 
@@ -187,7 +186,7 @@ module.exports.getEmployeesByManager = (manager) =>{
 // "num" parameter using the resolve method of the returned promise
 module.exports.getEmployeeByNum = (num) =>{
     return new Promise((resolve, reject)=>{
-        sequelize.sync().then(function() {
+        
             Employee.findAll({
                 attributes: [["employeeNum", "Employee Num"],
                         ["firstName" || " " || "last_name", "Full Name"],
@@ -202,13 +201,13 @@ module.exports.getEmployeeByNum = (num) =>{
                 }
             }).then(function(data){
                 if(data.length > 0){
-                resolve(data);
+                resolve(data[0]);
             }
             else{
                 reject("no results returned");
             }
             })
-        });
+        
     });
 };
 
@@ -216,7 +215,7 @@ module.exports.getEmployeeByNum = (num) =>{
 // the resolve method of the returned promise
 module.exports.getManagers = ()=>{
     return new Promise((resolve, reject)=>{
-        sequelize.sync().then(function() {
+    
             Employee.findAll({
                 attributes: [["employeeNum", "Employee Num"],
                         ["firstName" || " " || "last_name", "Full Name"],
@@ -237,7 +236,7 @@ module.exports.getManagers = ()=>{
                 reject("no results returned");
             }
             })
-        });
+        
     });
 };
 
@@ -246,7 +245,7 @@ module.exports.getManagers = ()=>{
 // returned promise
 module.exports.getDepartments = ()=>{
     return new Promise((resolve, reject)=>{
-       sequelize.sync().then(function() {
+       
         Department.findAll({
             attributes: ['departmentId', 'departmentName']
         }).then(function(data){
@@ -259,7 +258,7 @@ module.exports.getDepartments = ()=>{
         }
             
         )
-        });
+        
     });
 };
 
@@ -268,11 +267,11 @@ module.exports.addEmployee = (employeeData)=>{
 return new Promise((resolve, reject)=>{
     employeeData.isManager = (employeeData.isManager)? true : false;
     for (var prop in employeeData) {
-        if (employeeData[prop] === ''){
+        if (employeeData[prop] == ''){
             employeeData[prop] = null;
         }
     }
-        sequelize.sync().then(function() {
+        //sequelize.sync().then(function() {
             Employee.create({
                 employeeNum: employeeData.employeeNum,
                 firstName: employeeData.firstName,
@@ -289,8 +288,8 @@ return new Promise((resolve, reject)=>{
                 status: employeeData.status,
                 department: employeeData.department,
                 hireDate: employeeData.hireDate
-            }).then(resolve()).catch('unable to create employee');
-        });
+            }).then(resolve()).catch(reject('unable to create employee'));
+        //});
     });
 };
 
@@ -303,7 +302,7 @@ module.exports.updateEmployee = (employeeData)=>{
             employeeData[prop] = null;
         }
     }
-        sequelize.sync().then(function() {
+        //sequelize.sync().then(function() {
             Employee.update({
                 employeeNum: employeeData.employeeNum,
                 firstName: employeeData.firstName,
@@ -322,8 +321,8 @@ module.exports.updateEmployee = (employeeData)=>{
                 hireDate: employeeData.hireDate
             }, {
                 where: {employeeNum: employeeData.employeeNum}
-            }).then(resolve()).catch('unable to update employee');
-        });
+            }).then(resolve()).catch(reject('unable to update employee'));
+       // });
     });
 };
 
@@ -334,12 +333,12 @@ return new Promise((resolve, reject)=>{
             departmentData[prop] = null;
         }
     }
-        sequelize.sync().then(function() {
+        //sequelize.sync().then(function() {
             Department.create({
                 departmentId: departmentData.departmentId,
                 departmentName: departmentData.departmentName
-            }).then(resolve()).catch('unable to create department');
-        });
+            }).then(resolve()).catch(reject('unable to create department'));
+        //});
     });
 };
 
@@ -350,20 +349,20 @@ module.exports.updateDepartment = (departmentData)=>{
             departmentData[prop] = null;
         }
     }
-        sequelize.sync().then(function() {
+        //sequelize.sync().then(function() {
             Department.update({
                 departmentId: departmentData.departmentId,
                 departmentName: departmentData.departmentName
             }, {
                 where: {departmentId: departmentData.departmentId}
-            }).then(resolve()).catch('unable to update department');
-        });
+            }).then(resolve()).catch(reject('unable to update department'));
+        //});
     });
 };
 
 module.exports.getDepartmentById = (id) =>{
     return new Promise((resolve, reject)=>{
-        sequelize.sync().then(function() {
+        //sequelize.sync().then(function() {
             Department.findAll({
                 where: {
                     departmentId: id
@@ -376,6 +375,6 @@ module.exports.getDepartmentById = (id) =>{
                 reject("no results returned");
             }
             })
-        });
+        //});
     });
 };

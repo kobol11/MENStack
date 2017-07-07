@@ -76,14 +76,7 @@ module.exports.initialize = ()=>{
 module.exports.getAllEmployees = ()=>{
     return new Promise((resolve, reject)=>{
         Employee.findAll({
-            /*attributes: [["employeeNum", "Employee Num"],
-                        ["firstName" || " " || "last_name", "Full Name"],
-                        ["email", "Email"],
-                        ["addressStreet" || " " || "addresCity" || " " || "addressState" || " " || "addressPostal", "Address"],
-                        ["employeeManagerNum", "Manager ID"],
-                        ["status", "Status"],
-                        ["department", "Department"],
-                        ["hireDate", "Hired On"]]*/
+           
         }).then(function(data){
             if(data.length > 0){
                 resolve(data);
@@ -101,14 +94,7 @@ module.exports.getEmployeesByStatus = (status)=>{
     return new Promise((resolve, reject)=>{
        
             Employee.findAll({
-               /* attributes: [["employeeNum", "Employee Num"],
-                        ["firstName" || " " || "last_name", "Full Name"],
-                        ["email", "Email"],
-                        ["addressStreet" || " " || "addresCity" || " " || "addressState" || " " || "addressPostal", "Address"],
-                        ["employeeManagerNum", "Manager ID"],
-                        ["status", "Status"],
-                        ["department", "Department"],
-                        ["hireDate", "Hired On"]],*/
+              
                 where: {
                     status: status
                 }
@@ -130,14 +116,7 @@ module.exports.getEmployeesByDepartment = (department)=>{
     return new Promise((resolve, reject)=>{
         
             Employee.findAll({
-                /*attributes: [["employeeNum", "Employee Num"],
-                        ["firstName" || " " || "last_name", "Full Name"],
-                        ["email", "Email"],
-                        ["addressStreet" || " " || "addresCity" || " " || "addressState" || " " || "addressPostal", "Address"],
-                        ["employeeManagerNum", "Manager ID"],
-                        ["status", "Status"],
-                        ["department", "Department"],
-                        ["hireDate", "Hired On"]],*/
+                
                 where: {
                     department: department
                 }
@@ -159,14 +138,7 @@ module.exports.getEmployeesByManager = (manager) =>{
     return new Promise((resolve, reject)=>{
         
             Employee.findAll({
-                /*attributes: [["employeeNum", "Employee Num"],
-                        ["firstName" || " " || "last_name", "Full Name"],
-                        ["email", "Email"],
-                        ["addressStreet" || " " || "addresCity" || " " || "addressState" || " " || "addressPostal", "Address"],
-                        ["employeeManagerNum", "Manager ID"],
-                        ["status", "Status"],
-                        ["department", "Department"],
-                        ["hireDate", "Hired On"]],*/
+               
                 where: {
                     employeeManagerNum: manager
                 }
@@ -188,14 +160,7 @@ module.exports.getEmployeeByNum = (num) =>{
     return new Promise((resolve, reject)=>{
         
             Employee.findAll({
-                /*attributes: [["employeeNum", "Employee Num"],
-                        ["firstName" || " " || "last_name", "Full Name"],
-                        ["email", "Email"],
-                        ["addressStreet" || " " || "addresCity" || " " || "addressState" || " " || "addressPostal", "Address"],
-                        ["employeeManagerNum", "Manager ID"],
-                        ["status", "Status"],
-                        ["department", "Department"],
-                        ["hireDate", "Hired On"]],*/
+                
                 where: {
                     employeeNum: num
                 }
@@ -217,14 +182,7 @@ module.exports.getManagers = ()=>{
     return new Promise((resolve, reject)=>{
     
             Employee.findAll({
-               /* attributes: [["employeeNum", "Employee Num"],
-                        ["firstName" || " " || "last_name", "Full Name"],
-                        ["email", "Email"],
-                        ["addressStreet" || " " || "addresCity" || " " || "addressState" || " " || "addressPostal", "Address"],
-                        ["employeeManagerNum", "Manager ID"],
-                        ["status", "Status"],
-                        ["department", "Department"],
-                        ["hireDate", "Hired On"]],*/
+               
                 where: {
                     isManager: true
                 }
@@ -247,7 +205,7 @@ module.exports.getDepartments = ()=>{
     return new Promise((resolve, reject)=>{
        
         Department.findAll({
-           // attributes: ['departmentId', 'departmentName']
+           
         }).then(function(data){
             if (data.length > 0){
                 resolve(data);
@@ -326,6 +284,7 @@ module.exports.updateEmployee = (employeeData)=>{
     });
 };
 
+// This function helps in adding new department to the database
 module.exports.addDepartment = (departmentData)=>{
 return new Promise((resolve, reject)=>{
     for (var prop in departmentData) {
@@ -342,6 +301,8 @@ return new Promise((resolve, reject)=>{
     });
 };
 
+
+// This function helps im updating the department name
 module.exports.updateDepartment = (departmentData)=>{
     return new Promise((resolve, reject)=>{
         for (var prop in departmentData) {
@@ -360,7 +321,7 @@ module.exports.updateDepartment = (departmentData)=>{
     });
 };
 
-
+// This function helps in department name by its Id
 module.exports.getDepartmentById = (id) =>{
     return new Promise((resolve, reject)=>{
         
@@ -382,7 +343,7 @@ module.exports.getDepartmentById = (id) =>{
 };
 
 
-
+// This funtion helps in deleting employee from our database
 module.exports.deleteEmployeeByNum = (empNum) =>{   
     return new Promise((resolve, reject)=>{
       Employee.destroy({

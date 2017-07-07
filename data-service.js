@@ -360,21 +360,10 @@ module.exports.updateDepartment = (departmentData)=>{
     });
 };
 
-module.exports.getDepartmentById = (id) =>{
+module.exports.deleteEmployeeByNum = (empNum) =>{   
     return new Promise((resolve, reject)=>{
-        //sequelize.sync().then(function() {
-            Department.findAll({
-                where: {
-                    departmentId: id
-                }
-            }).then(function(data){
-                if(data.length > 0){
-                resolve(data[0]);
-            }
-            else{
-                reject("no results returned");
-            }
-            })
-        //});
-    });
+      Employee.destroy({
+          where: {employeeNum: empNum}
+      }).then(resolve()).catch(reject("Unable to Remove Employee / Employee Not Found"))
+    }); 
 };

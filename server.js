@@ -199,6 +199,13 @@ app.get("/department/:departmentId", (req,res) => {
     });
 });
 
+app.get("/employee/delete/:empNum", (req, res)=>{
+    dataService.deleteEmployeeByNum(req.params.empNum).then(()=>{
+        res.redirect("/employees");
+    }).catch(()=>{
+    res.status(500).send("Unable to Remove Employee/ Employee Not Found");
+    })
+})
 // Setting up a route to capture every other request
 app.use((req, res) => {
   res.status(404).send("Page Not Found");

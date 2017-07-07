@@ -360,6 +360,29 @@ module.exports.updateDepartment = (departmentData)=>{
     });
 };
 
+
+module.exports.getDepartmentById = (id) =>{
+    return new Promise((resolve, reject)=>{
+        
+            Department.findAll({
+               
+                where: {
+                    departmentId: id
+                }
+            }).then(function(data){
+                if(data.length > 0){
+                resolve(data[0]);
+            }
+            else{
+                reject("no results returned");
+            }
+            })
+        
+    });
+};
+
+
+
 module.exports.deleteEmployeeByNum = (empNum) =>{   
     return new Promise((resolve, reject)=>{
       Employee.destroy({

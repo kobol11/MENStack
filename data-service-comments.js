@@ -36,7 +36,7 @@ module.exports.addComment = (data)=>{
         let newComment = new Comment(data);
         newComment.save((err)=>{
             if(err){
-                reject("There was an error saving the comment " + err.message);
+                reject("There was an error saving the comment " + err);
             }
             else{
                 resolve(newComment._id);

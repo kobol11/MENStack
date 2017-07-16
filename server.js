@@ -5,7 +5,7 @@
  * (including web sites) or distributed to other students.
  * Name: Bolarinwa Komolafe
  * Student ID: 122948169
- * Date: 4th July, 2017
+ * Date: 16th July, 2017
  * Online (Heroku) URL: https://stormy-cove-57005.herokuapp.com
  * 
  **********************************************************************************************/
@@ -48,7 +48,12 @@ app.get("/", function(req,res){
 
 // setup another route to listen on /about
 app.get("/about", function(req,res){
-   res.render("about");
+    dataServiceComments.getAllComments.then((result)=>{
+        res.render("about", {data: result});
+    }).catch(()=>{
+        res.render("about");
+    })
+   
 });
 
 // setup a route to return employee list
@@ -211,7 +216,23 @@ app.use((req, res) => {
   res.status(404).send("Page Not Found");
 });
 
+app.post("/about/addComment", (req, res)=>{
+    dataServiceComments.addComment(req.body).then(()=>{
+    res.redirect("/about");
+    }).catch((err)=>{
+        console.log(err);
+        res.redirect("/about");
+    });
+});
 
+app.post("/about/addReply", (req, res)=>{
+    dataServiceComments.addReply(req.body).then(()=>{
+    res.redirect("/about");
+    }).catch((err)=>{
+        console.log(err);
+        res.redirect("/about");
+    });
+});
 
 // setup http server to listen on HTTP_PORT
 dataService.initialize().then(dataServiceComments.initialize).then(()=>{

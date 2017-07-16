@@ -9,7 +9,7 @@
  * Online (Heroku) URL: https://stormy-cove-57005.herokuapp.com
  * 
  **********************************************************************************************/
-
+const dataServiceComments = require("./data-service-comments.js");
 var path = require("path");
 var express = require("express");
 var dataService = require("./data-service.js");

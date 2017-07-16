@@ -48,7 +48,7 @@ app.get("/", function(req,res){
 
 // setup another route to listen on /about
 app.get("/about", function(req,res){
-    dataServiceComments.getAllComments.then((result)=>{
+    dataServiceComments.getAllComments().then((result)=>{
         res.render("about", {data: result});
     }).catch(()=>{
         res.render("about");

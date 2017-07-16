@@ -214,9 +214,34 @@ app.use((req, res) => {
 
 
 // setup http server to listen on HTTP_PORT
-dataService.initialize().then(()=>{
+dataService.initialize().then(dataServiceComments.initialize).then(()=>{
   app.listen(HTTP_PORT, onHttpStart);  
 }).catch((errorMessage)=>{
   res.send(errorMessage);
 });
 
+/*dataServiceComments.initialize()
+.then(()=>{
+    dataServiceComments.addComment({
+        authorName: "Comment 1 Author",
+        authorEmail: "comment1@mail.com",
+        subject: "Comment 1",
+        commentText: "Comment Text 1"
+    
+    }).then((id)=>{
+        dataServiceComments.addReply({
+            comment_id: id,
+            authorName: "Reply 1 Author",
+            authorEmail: "reply1@mail.com",
+            commentText: "Reply Text 1"
+        
+    }).then(dataServiceComments.getAllComments)
+        .then((data)=>{
+            console.log("comment: " + data[data.length - 1]);
+            process.exit();
+        });
+    });    
+}).catch((err)=>{
+    console.log("Error: " + err);
+    process.exit();
+});*/

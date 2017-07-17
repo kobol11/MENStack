@@ -210,10 +210,6 @@ app.get("/employee/delete/:empNum", (req, res)=>{
     }).catch(()=>{
     res.status(500).send("Unable to Remove Employee/ Employee Not Found");
     })
-})
-// Setting up a route to capture every other request
-app.use((req, res) => {
-  res.status(404).send("Page Not Found");
 });
 
 app.post("/about/addComment", (req, res)=>{
@@ -233,6 +229,13 @@ app.post("/about/addReply", (req, res)=>{
         res.redirect("/about");
     });
 });
+
+// Setting up a route to capture every other request
+app.use((req, res) => {
+  res.status(404).send("Page Not Found");
+});
+
+
 
 // setup http server to listen on HTTP_PORT
 dataService.initialize().then(dataServiceComments.initialize).then(()=>{

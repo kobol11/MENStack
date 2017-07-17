@@ -16,19 +16,52 @@
 					</article>
 				</section>
 		</div>
-	
+	<div clas="container">
    <div class="row">
 <div class="col-md-12">
 <h3>Leave a Comment</h3>
 <div class="well">
 <div class="row">
 <div class="col-md-12">
-COMMENT FORM
+<form  method="POST" action="/about/addComment">
+<div class="row">
+	<div class="col-md-6">
+                    <div class="form-group">
+						<input class="form-control" id="authorName" name="authorName" type="text" placeholder="Name"/>
+                    </div></div>
+
+<div class="col-md-6">
+    <div class="form-group">
+	<input class="form-control" id="authorEmail" name="authorEmail" type="email" placeholder="Email"/>
+                    </div></div></div>
+
+<div class="row">
+	<div class="col-md-12">
+		<div class="form-group">
+			<input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" />
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		<div class="form-group">
+			<textarea class="form-control" name="commentText" id="commentText" rows="8" placeholder="Comment"></textarea>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-2 col-md-offset-10">
+<button type="submit" class="btn btn-primary form-control">Comment</button>
+	</div>
+</div>
+</form>
 </div>
 </div>
 </div>
 </div>
 </div>
+</div>
+
 
 {{#if data}}
 <div class="row">
@@ -42,16 +75,20 @@ COMMENT FORM
 {{#each data}}
 <div class="row">
 <div class="col-md-12">
+	<strong>{{subject}}</strong>
 <div class="well">
 <div class="row">
 <div class="col-md-12">
-COMMENT[{{@index}}]<br /><br />
+{{commentText}}<br /><br />
+Posted on: {{postedDate}} by <a href="mailto:{{authorEmail}}">{{authorName}}</a><br /><br />
 </div>
 </div>
 {{#each replies}}
 <div class="row">
 <div class="col-md-12">
-<div class="well">REPLY[{{@index}}]</div>
+<div class="well">{{commentText}}<br /><br />
+Posted on: {{repliedDate}} by <a href="mailto:{{authorEmail}}">{{authorName}}</a><br />
+</div>
 </div>
 </div>
 {{/each}}
@@ -66,7 +103,32 @@ COMMENT[{{@index}}]<br /><br />
 <div class="well">
 <div class="row">
 <div class="col-md-12">
-REPLY FORM
+<form role="form" method="POST" action="/about/addReply">
+
+	<div class="row">
+		<div class="col-md-6">
+			<input type="text" name="authorName" class="form-control" placeholder="Name" /> <br />
+		</div>
+		<div class="col-md-6">
+			<input type="email" name="authorEmail" class="form-control" placeholder="Email" /> <br />
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<textarea name="commentText" class="form-control" placeholder="Comment" rows="8"></textarea><br />
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<input type="hidden" value="{{_id}}" name="comment_id" />
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-2 col-md-offset-10">
+			<button class="btn btn-primary form-control" type="submit">Reply</button>
+		</div>
+	</div>
+</form>
 </div>
 </div>
 </div>

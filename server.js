@@ -69,14 +69,17 @@ app.get("/", function(req,res){
    
 });
 
+// route setup to get the login page
 app.get("/login", function(req,res){
    res.render("login");  
 });
 
+// route setup to get the user registration page
 app.get("/register", function(req,res){
    res.render("register"); 
 });
 
+//route to submit user registration details
 app.post("/register", (req, res)=>{
     dataServiceAuth.registerUser(req.body).then(()=>{
     res.render("register", {successMessage: "User Created"});
@@ -85,6 +88,7 @@ app.post("/register", (req, res)=>{
     });
 });
 
+// route to submit and authenticate user login detials
 app.post("/login", (req, res)=>{
     dataServiceAuth.checkUser(req.body).then(()=>{
     req.session.user = {
@@ -96,6 +100,7 @@ app.post("/login", (req, res)=>{
     });
 });
 
+// route to get the logout page
 app.get("/logout", function(req, res) {
   req.session.reset();
   res.redirect("/");
@@ -108,11 +113,9 @@ app.get("/about", function(req,res){
     }).catch(()=>{
         res.render("about");
     })
-   
 });
 
 // setup a route to return employee list
-
 app.get("/employees", ensureLogin, (req, res) =>{
 
     if(req.query.status){
@@ -146,20 +149,12 @@ app.get("/employees", ensureLogin, (req, res) =>{
             res.json({message: dataMessage});
         }).catch((errorMessage)=>{
             res.json(errorMessage);
-        });
-        
+        });   
     }
-    
 });
 
 // Setting up a route to get employee based on the employee number
 app.get("/employee/:empNum", ensureLogin, (req,res) => {
-
-    /*dataService.getEmployeeByNum(req.params.empNum).then((data)=>{
-        res.render("employee", {data:data});
-    }).catch(()=>{
-       res.status(404).send("Employee Not Found");
-    });*/
 
 // initialize an empty object to store the values
 let viewData = {};
@@ -213,7 +208,6 @@ app.get("/employees/add", ensureLogin, (req, res)=>{
     dataService.getDepartments().then((data)=>{res.render("addEmployee", {departments: data});}).catch(()=>{
         res.render("addEmployee", {departments: {}});
     });
-
 });
 
 // Setting up a route to show all employees after a new employee is added 
@@ -232,11 +226,12 @@ app.post("/employee/update", ensureLogin, (req, res)=>{
     });
 });
 
+// route to get the "add department" page
 app.get("/departments/add", ensureLogin,(req, res)=>{
     res.render("addDepartment");
-
 });
 
+// route to submit new department details to be added to the department list
 app.post("/departments/add", ensureLogin, (req, res)=>{
     console.log(req.body);
     dataService.addDepartment(req.body).then(()=>{
@@ -244,6 +239,7 @@ app.post("/departments/add", ensureLogin, (req, res)=>{
     });
 });
 
+// route to post updated departmental information
 app.post("/department/update", ensureLogin, (req, res)=>{
     console.log(req.body);
     dataService.updateDepartment(req.body).then(()=>{
@@ -251,6 +247,7 @@ app.post("/department/update", ensureLogin, (req, res)=>{
     });
 });
 
+// route to get department by departmentId
 app.get("/department/:departmentId", ensureLogin, (req,res) => {
     dataService.getDepartmentById(req.params.departmentId).then((data)=>{
         res.render("department", {data:data});
@@ -259,6 +256,7 @@ app.get("/department/:departmentId", ensureLogin, (req,res) => {
     });
 });
 
+//route to get employee by employee number
 app.get("/employee/delete/:empNum", ensureLogin, (req, res)=>{
     dataService.deleteEmployeeByNum(req.params.empNum).then(()=>{
         res.redirect("/employees");
@@ -267,6 +265,7 @@ app.get("/employee/delete/:empNum", ensureLogin, (req, res)=>{
     })
 });
 
+//route to post new comment
 app.post("/about/addComment", (req, res)=>{
     dataServiceComments.addComment(req.body).then(()=>{
     res.redirect("/about");
@@ -276,6 +275,7 @@ app.post("/about/addComment", (req, res)=>{
     });
 });
 
+// route to post new reply
 app.post("/about/addReply", (req, res)=>{
     dataServiceComments.addReply(req.body).then(()=>{
     res.redirect("/about");

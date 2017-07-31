@@ -9,6 +9,7 @@
  * Online (Heroku) URL: https://stormy-cove-57005.herokuapp.com
  * 
  **********************************************************************************************/
+const dataServiceAuth = require("./data-service-auth.js");
 const dataServiceComments = require("./data-service-comments.js");
 var path = require("path");
 var express = require("express");
@@ -33,7 +34,28 @@ app.engine('.hbs', exphbs({
             }
         }
     }}));
+
 app.set('view engine', '.hbs');
+app.use(clientSessions({
+  cookieName: "session", 
+  secret: "Bolaji83_assignment7!", 
+  duration: 2 * 60 * 1000, 
+  activeDuration: 1000 * 60
+}));
+
+app.use(function(req, res, next) {
+res.locals.session = req.session;
+next();
+});
+
+function ensureLogin(req, res, next) {
+  if (!req.session.user) {
+    res.redirect("/login");
+  } else {
+    next();
+  }
+}
+
 var HTTP_PORT = process.env.PORT || 8000;
  
 // call this function after the http server starts listening for requests
@@ -59,7 +81,7 @@ app.get("/about", function(req,res){
 
 // setup a route to return employee list
 
-app.get("/employees", (req, res) =>{
+app.get("/employees", ensureLogin, (req, res) =>{
 
     if(req.query.status){
         
@@ -99,7 +121,7 @@ app.get("/employees", (req, res) =>{
 });
 
 // Setting up a route to get employee based on the employee number
-app.get("/employee/:empNum", (req,res) => {
+app.get("/employee/:empNum", ensureLogin, (req,res) => {
 
     /*dataService.getEmployeeByNum(req.params.empNum).then((data)=>{
         res.render("employee", {data:data});
@@ -137,7 +159,7 @@ dataService.getEmployeeByNum(req.params.empNum)
 });
 
 // Setting up a route to get list of managers
-app.get("/managers", (req, res)=>{
+app.get("/managers", ensureLogin, (req, res)=>{
     dataService.getManagers().then((data)=>{
         res.render("employeeList", {data: data, title:"Employees (Managers)"});
     }).catch((errorMessage)=>{
@@ -146,7 +168,7 @@ app.get("/managers", (req, res)=>{
 });
 
 // Setting up a route for getting the department list
-app.get("/departments", (req, res)=>{
+app.get("/departments", ensureLogin, (req, res)=>{
     dataService.getDepartments().then((data)=>{
         res.render("departmentList", {data: data, title: "Departments"});
     }).catch((errorMessage)=>{
@@ -155,7 +177,7 @@ app.get("/departments", (req, res)=>{
 });
 
 // Setting up a route to add new employee
-app.get("/employees/add", (req, res)=>{
+app.get("/employees/add", ensureLogin, (req, res)=>{
     dataService.getDepartments().then((data)=>{res.render("addEmployee", {departments: data});}).catch(()=>{
         res.render("addEmployee", {departments: {}});
     });
@@ -163,7 +185,7 @@ app.get("/employees/add", (req, res)=>{
 });
 
 // Setting up a route to show all employees after a new employee is added 
-app.post("/employees/add", (req, res)=>{
+app.post("/employees/add", ensureLogin, (req, res)=>{
     console.log(req.body);
     dataService.addEmployee(req.body).then(()=>{
     res.redirect("/employees");
@@ -171,33 +193,33 @@ app.post("/employees/add", (req, res)=>{
 });
 
 // Setting up a route to show all employees after the employee list is updated
-app.post("/employee/update", (req, res)=>{
+app.post("/employee/update", ensureLogin, (req, res)=>{
     console.log(req.body);
     dataService.updateEmployee(req.body).then(()=>{
     res.redirect("/employees");
     });
 });
 
-app.get("/departments/add", (req, res)=>{
+app.get("/departments/add", ensureLogin,(req, res)=>{
     res.render("addDepartment");
 
 });
 
-app.post("/departments/add", (req, res)=>{
+app.post("/departments/add", ensureLogin, (req, res)=>{
     console.log(req.body);
     dataService.addDepartment(req.body).then(()=>{
     res.redirect("/departments");
     });
 });
 
-app.post("/department/update", (req, res)=>{
+app.post("/department/update", ensureLogin, (req, res)=>{
     console.log(req.body);
     dataService.updateDepartment(req.body).then(()=>{
     res.redirect("/departments");
     });
 });
 
-app.get("/department/:departmentId", (req,res) => {
+app.get("/department/:departmentId", ensureLogin, (req,res) => {
     dataService.getDepartmentById(req.params.departmentId).then((data)=>{
         res.render("department", {data:data});
     }).catch(()=>{
@@ -205,7 +227,7 @@ app.get("/department/:departmentId", (req,res) => {
     });
 });
 
-app.get("/employee/delete/:empNum", (req, res)=>{
+app.get("/employee/delete/:empNum", ensureLogin, (req, res)=>{
     dataService.deleteEmployeeByNum(req.params.empNum).then(()=>{
         res.redirect("/employees");
     }).catch(()=>{

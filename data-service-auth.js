@@ -32,7 +32,7 @@ module.exports.registerUser = (userData)=>{
             let newUser = new User(userData);
             newUser.save((err)=>{
             if(err){
-                if (err.code == 11000){
+                if (err.code === 11000){
                       reject("User Name already taken");
                 }
                 else{

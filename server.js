@@ -79,9 +79,9 @@ app.get("/register", function(req,res){
 
 app.post("/register", (req, res)=>{
     dataServiceAuth.registerUser(req.body).then(()=>{
-    res.redirect("/register", {successMessage: "User Created"});
+    res.render("register", {successMessage: "User Created"});
     }).catch((err)=>{
-        res.redirect("/register", {errorMessage: err, user: req.body.user});
+        res.render("register", {errorMessage: err, user: req.body.user});
     });
 });
 
@@ -92,7 +92,7 @@ app.post("/login", (req, res)=>{
     };
     res.redirect("/employees");
     }).catch((err)=>{
-        res.redirect("/login", {errorMessage: err, user: req.body.user});
+        res.render("login", {errorMessage: err, user: req.body.user});
     });
 });
 

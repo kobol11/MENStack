@@ -18,9 +18,16 @@
 					<h1>myApp
 
                     {{#if session.user}}
-                    <span class="pull-right"><a href="/logout" class="btn btn-primary">&nbsp;&nbsp;&nbsp;
-                    Log Out: {{session.user.username}}&nbsp;&nbsp;&nbsp;</a>
-                    </span>
+                    <div class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true">
+                    <span class="glyphicon glyphicon-user">{{session.user.username}}</span>&nbsp;&nbsp;<span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                     <li><a href="#" data-toggle="modal" data-target="#profileModal"><span class="glyphicon glyphicon-user">Profile</span></a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="/logout"><span class="glyphicon glyphicon-off">Log Out</span></a></li>
+                    </ul>
+                    </div>
                     {{/if}}
                     
                     {{#unless session.user}}

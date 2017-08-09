@@ -70,11 +70,11 @@ module.exports.checkUser = (userData)=>{
                     resolve();
                 }
                 if(res === false){
-                    reject("Unable to find user: " + userData.user);
+                    reject("Incorrect Password for user: " + userData.user);
                 }
             });
         }).catch((err)=>{
-            reject("Unable to find user: " + userData.user);
+            reject("Incorrect Password for user: " + userData.user);
         })
     });
 };
@@ -93,12 +93,12 @@ module.exports.updatePassword = (userData)=>{
         if(err){
             reject("There was an error encrypting the password");
         }
-        else{
+        if(!err){
             userData.password = hash;
             User.update({ user: userData.user },
             { $set: { password: hash } },
             { multi: false })
-            .exec() .then(resolve()) .catch("There was an error updating the password for " + userData.user);
+            .exec() .then(resolve()) .catch(reject("There was an error updating the password for " + userData.user));
         }
     });
 }); 

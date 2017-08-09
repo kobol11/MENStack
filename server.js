@@ -20,6 +20,7 @@ const clientSessions = require("client-sessions");
 var app = express();
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
 app.engine('.hbs', exphbs({
     extname: '.hbs',
     defaultLayout: 'layout',
@@ -282,6 +283,18 @@ app.post("/about/addReply", (req, res)=>{
     }).catch((err)=>{
         console.log(err);
         res.redirect("/about");
+    });
+});
+
+app.post("/api/updatePassword", (req, res)=>{
+    dataServiceAuth.checkUser({ user: req.body.user, password: req.body.currentPassword }).then(()=>{
+        dataServiceAuth.updatePassword(req.body).then(()=>{
+            res.json({successMessage: "Password changed successfully for user: " + req.body.user});
+        }).catch((err)=>{
+            res.json({errorMessage: err});
+        });
+    }).catch((err)=>{
+    res.json({errorMessage: err});   
     });
 });
 

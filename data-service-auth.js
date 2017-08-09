@@ -1,3 +1,4 @@
+const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
 let Schema = mongoose.Schema;
 var userSchema = new Schema({
@@ -29,6 +30,15 @@ module.exports.registerUser = (userData)=>{
             reject("Passwords do not match");
         }
         else{
+
+            bcrypt.genSalt(10, function(err, salt) { // Generate a "salt" using 10 rounds
+    bcrypt.hash(userData.password, salt, function(err, hash) { 
+        
+        if(err){
+            reject("There was an error encrypting the password");
+        }
+        else{
+            userData.password = hash;
             let newUser = new User(userData);
             newUser.save((err)=>{
             if(err){
@@ -46,23 +56,52 @@ module.exports.registerUser = (userData)=>{
         });
         }
     });
+}); 
+        }
+    });
 };
 
 module.exports.checkUser = (userData)=>{
     return new Promise((resolve, reject)=>{
         User.find({user: userData.user}).exec()
         .then((users)=>{
-            if (users.length == 0){
-                reject("Unable to find user: " + userData.user);
-            }
-            if (users[0].password != userData.password){
-                reject("Incorrect Password for user: " + userData.user);
-            }
-            if (users[0].password == userData.password){
-                resolve();
-            }
+            bcrypt.compare(userData.password, users[0].password).then((res) => {
+                if(res === true){
+                    resolve();
+                }
+                if(res === false){
+                    reject("Unable to find user: " + userData.user);
+                }
+            });
         }).catch((err)=>{
             reject("Unable to find user: " + userData.user);
         })
+    });
+};
+
+
+module.exports.updatePassword = (userData)=>{
+    return new Promise((resolve, reject)=>{
+        if (userData.password != userData.password2){
+            reject("Passwords do not match");
+        }
+        else{
+
+            bcrypt.genSalt(10, function(err, salt) { // Generate a "salt" using 10 rounds
+    bcrypt.hash(userData.password, salt, function(err, hash) { 
+        
+        if(err){
+            reject("There was an error encrypting the password");
+        }
+        else{
+            userData.password = hash;
+            User.update({ user: userData.user },
+            { $set: { password: hash } },
+            { multi: false })
+            .exec() .then(resolve()) .catch("There was an error updating the password for " + userData.user);
+        }
+    });
+}); 
+        }
     });
 };
